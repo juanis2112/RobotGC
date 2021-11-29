@@ -49,7 +49,7 @@ int main(int argc, char **argv) {
   parse_party_and_port(argv, &party, &port);
   NetIO *io = new NetIO(party == ALICE ? nullptr : "127.0.0.1", port);
   setup_semi_honest(io, party);
-  bool print = 0;
+  bool print = 1;
 
   
   
@@ -75,13 +75,14 @@ int main(int argc, char **argv) {
 
   cout << endl;
   // Control loop
-  for (k = 0; k < 400; k++) {
-    auto started = std::chrono::high_resolution_clock::now();
+  for (k = 0; k < 20; k++) {
+    
     cloud->computeuk(subsystem->yk);
+    
     subsystem->measureState(cloud->uk);
+    
     subsystem->computeyk();
-    auto done = std::chrono::high_resolution_clock::now();
-    cout << std::chrono::duration_cast<std::chrono::milliseconds>(done-started).count()<<endl;
+    
     if (print) {
       print_rest( cloud, subsystem, k+1);
     }

@@ -21,6 +21,9 @@ public:
   fixedPoint **cosCoeff;
   int sizeTaylor[2];
 
+  int decimalBits = 24;
+  int totalBits = 48;
+
   subSystem() {}
 
   
@@ -39,7 +42,7 @@ public:
   void computeyk() {
     for (int i = 0; i < this->sizeyk[0]; i++) {
       for (int j = 0; j < this->sizeyk[1]; j++) {
-        this->yk[i][j] = fixedPoint(0, 24, 24, ALICE);
+        this->yk[i][j] = fixedPoint(0, decimalBits, decimalBits, ALICE);
       }
     }
   }
@@ -53,7 +56,7 @@ public:
   // Computes the multiplication between matrices A and B
   void matrixMul(fixedPoint **A, fixedPoint **B, fixedPoint **ret, int *ASize,
                  int *BSize) {
-    fixedPoint zero(0, 24, 24, PUBLIC);
+    fixedPoint zero(0, decimalBits, decimalBits, PUBLIC);
     for (int i = 0; i < ASize[0]; i++) {
       for (int j = 0; j < BSize[1]; j++) {
         ret[i][j] = (A[i][0] * B[0][j]);
@@ -67,7 +70,7 @@ public:
   // Computes the multiplication between matrix A and vector B
   void matrixVecMul(fixedPoint **A, fixedPoint **B, fixedPoint *ret,
                     int *size) {
-    fixedPoint zero(0, 24, 24, PUBLIC);
+    fixedPoint zero(0, decimalBits, decimalBits, PUBLIC);
     for (int i = 0; i < size[0]; i++) {
       ret[i] = ((A[i][0]) * (B[0][0]));
       for (int j = 1; j < size[1]; j++) {
@@ -121,8 +124,8 @@ public:
   }
 
   void initializeData(){
-    this->dFLi = fixedPoint(0, 24, 24, ALICE);
-    this->dFL = fixedPoint(0, 24, 24, ALICE);
+    this->dFLi = fixedPoint(0, decimalBits, decimalBits, ALICE);
+    this->dFL = fixedPoint(0, decimalBits, decimalBits, ALICE);
     this->sizeuk[0] = 2;
     this->sizeuk[1] = 1;
 
@@ -136,7 +139,7 @@ public:
 
     for (int i = 0; i < this->sizeyk[0]; i++) {
       for (int j = 0; j < this->sizeyk[1]; j++) {
-        this->yk[i][j] = fixedPoint(0, 24, 24, ALICE);
+        this->yk[i][j] = fixedPoint(0, decimalBits, decimalBits, ALICE);
       }
     }
 
@@ -150,8 +153,8 @@ public:
 
     for(int i=0; i < this->sizeTaylor[0]; i++){
       for(int j=0; j < this->sizeTaylor[1]; j++){
-        this->sinCoeff[i][j] = fixedPoint(0, 24, 24, ALICE);
-        this->cosCoeff[i][j] = fixedPoint(0, 24, 24, ALICE);
+        this->sinCoeff[i][j] = fixedPoint(0, decimalBits, decimalBits, ALICE);
+        this->cosCoeff[i][j] = fixedPoint(0, decimalBits, decimalBits, ALICE);
       }
     }
 
@@ -163,7 +166,7 @@ public:
 
     for(int i=0; i < this->sizeyd[0]; i++){
       for(int j=0; j < this->sizeyd[1]; j++){
-        this->yd[i][j] = fixedPoint(0, 24, 24, ALICE);
+        this->yd[i][j] = fixedPoint(0, decimalBits, decimalBits, ALICE);
       }
     }
   }

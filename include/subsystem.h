@@ -27,6 +27,8 @@ public:
   fixedPoint **cosCoeff;
   int sizeTaylor[2];
 
+  int decimalBits = 24;
+  int totalBits = 48;
   
 
   subSystem() {}
@@ -58,7 +60,7 @@ public:
   void computeyk() {
     for (int i = 0; i < this->sizeyk[0]; i++) {
       for (int j = 0; j < this->sizeyk[1]; j++) {
-        this->yk[i][j] = fixedPoint(this->xk_ne[i][j], 24, 24, ALICE);
+        this->yk[i][j] = fixedPoint(this->xk_ne[i][j], decimalBits, decimalBits, ALICE);
       }
     }
   } 
@@ -73,7 +75,7 @@ public:
   // Computes the multiplication between matrices A and B
   void matrixMul(fixedPoint **A, fixedPoint **B, fixedPoint **ret, int *ASize,
                  int *BSize) {
-    fixedPoint zero(0, 24, 24, PUBLIC);
+    fixedPoint zero(0, decimalBits, decimalBits, PUBLIC);
     for (int i = 0; i < ASize[0]; i++) {
       for (int j = 0; j < BSize[1]; j++) {
         ret[i][j] = zero;
@@ -100,7 +102,7 @@ public:
   // Computes the multiplication between matrix A and vector B
   void matrixVecMul(fixedPoint **A, fixedPoint **B, fixedPoint *ret,
                     int *size) {
-    fixedPoint zero(0, 24, 24, PUBLIC);
+    fixedPoint zero(0, decimalBits, decimalBits, PUBLIC);
     for (int i = 0; i < size[0]; i++) {
       ret[i] = zero;
       for (int j = 0; j < size[1]; j++) {
@@ -165,8 +167,8 @@ public:
 
   // TODO: load data sizes and initialize robot state
   void initializeData(){
-    this->dFLi = fixedPoint(1/0.035, 24, 24, ALICE);
-    this->dFL  = fixedPoint(0.035, 24, 24, ALICE);
+    this->dFLi = fixedPoint(1/0.035, decimalBits, decimalBits, ALICE);
+    this->dFL  = fixedPoint(0.035, decimalBits, decimalBits, ALICE);
     this->sizeuk[0] = 2;
     this->sizeuk[1] = 1;
 
@@ -184,7 +186,7 @@ public:
     readFile(datax0, "Data/x0.txt", this->sizexk);
     for (int i = 0; i < this->sizexk[0]; i++) {
       for (int j = 0; j < this->sizexk[1]; j++) {
-        this->yk[i][j] = fixedPoint(datax0[i][j], 24, 24, ALICE);
+        this->yk[i][j] = fixedPoint(datax0[i][j], decimalBits, decimalBits, ALICE);
         this->xk_ne[i][j] = datax0[i][j];
       }
     }
@@ -213,8 +215,8 @@ public:
     readFile(dataCosCoeff, "Data/cosCoeff.txt", this->sizeTaylor);
     for(int i=0; i < this->sizeTaylor[0]; i++){
       for(int j=0; j < this->sizeTaylor[1]; j++){
-        this->sinCoeff[i][j] = fixedPoint(dataSinCoeff[i][j], 24, 24, ALICE);
-        this->cosCoeff[i][j] = fixedPoint(dataCosCoeff[i][j], 24, 24, ALICE);
+        this->sinCoeff[i][j] = fixedPoint(dataSinCoeff[i][j], decimalBits, decimalBits, ALICE);
+        this->cosCoeff[i][j] = fixedPoint(dataCosCoeff[i][j], decimalBits, decimalBits, ALICE);
       }
     }
 
@@ -230,7 +232,7 @@ public:
     readFile(datayd, "Data/yd.txt", this->sizeyd);
     for(int i=0; i < this->sizeyd[0]; i++){
       for(int j=0; j < this->sizeyd[1]; j++){
-        this->yd[i][j] = fixedPoint(datayd[i][j], 24, 24, ALICE);
+        this->yd[i][j] = fixedPoint(datayd[i][j], decimalBits, decimalBits, ALICE);
       }
     }
   }

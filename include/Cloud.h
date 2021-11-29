@@ -18,7 +18,8 @@ public:
   int sizeyd[2];
   int sizeTaylor[2];
 
-  
+  int decimalBits = 24;
+  int totalBits = 48;
 
   Cloud() {}
 
@@ -75,7 +76,6 @@ public:
   // Computes the multiplication between matrices A and B
   void matrixMul(fixedPoint **A, fixedPoint **B, fixedPoint **ret, int *ASize,
                  int *BSize) {
-    fixedPoint zero(0, 24, 24, PUBLIC);
     for (int i = 0; i < ASize[0]; i++) {
       for (int j = 0; j < BSize[1]; j++) {
         ret[i][j] = (A[i][0] * B[0][j]);
@@ -88,7 +88,6 @@ public:
 
   void matrixVecMul(fixedPoint **A, fixedPoint **B, fixedPoint *ret,
                     int *size) {
-    fixedPoint zero(0, 24, 24, PUBLIC);
     for (int i = 0; i < size[0]; i++) {
       ret[i] = ((A[i][0]) * (B[0][0]));
       for (int j = 1; j < size[1]; j++) {
@@ -118,10 +117,10 @@ public:
         this->error[i][j] = yd[i][j] - yk[i][j];
       }
     }
-    fixedPoint sine = fixedPoint(0, 24, 24, ALICE);
-    fixedPoint cosine = fixedPoint(0, 24, 24, ALICE);
+    fixedPoint sine = fixedPoint(0, decimalBits, decimalBits, PUBLIC);
+    fixedPoint cosine = fixedPoint(0, decimalBits, decimalBits, PUBLIC);
     this->computeSine(yk, cosine, sine);
-
+    
     this->error[0][0] = this->error[0][0] - this->dFL*cosine;
     this->error[1][0] = this->error[1][0] - this->dFL*sine;
 
@@ -131,6 +130,7 @@ public:
     this->uk[0][0] = cosine*this->error[0][0] + sine*this->error[1][0];
     this->uk[1][0] = -sine*this->error[0][0]  + cosine*this->error[1][0];
     this->uk[1][0] = this->dFLi*this->uk[1][0];
+    
   }
 
 
